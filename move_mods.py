@@ -34,6 +34,7 @@ def get_up_to_date():
     origin_commit_hash = repo.commit(branch).hexsha
 
     # Compare current commit to origin commit
+    print_color("Checking for repo updates...", "YELLOW")
     if current_commit_hash != origin_commit_hash:
         # Show the user the current commit details
         print_color(f"You're currently on: {current_commit_hash}", "YELLOW")
@@ -51,6 +52,8 @@ def get_up_to_date():
         print_color(f"You're now on: {current_commit_hash}", "GREEN")
         print_color(
             f"This was committed on: {get_local_timestamp(current_commit_timestamp)}\n", "GREEN")
+    else:
+        print_color("Your local repo is already up to date! ✓\n", "GREEN")
 
 
 def copy_mod(m, m_path, d_path):

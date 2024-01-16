@@ -63,6 +63,21 @@ def get_destination_path():
             count += 1
 
 
+def cleanup_destination(mods_in_repo, destination_path):
+    """Remove mods in the destination path that don't appear in the repo's mod folder"""
+    mods_in_destination = os.listdir(destination_path)
+
+    for mod in mods_in_destination:
+        if mod not in mods_in_repo:
+            mod_path = os.path.join(destination_path, mod)
+            try:
+                os.remove(mod_path)
+                print_color(
+                    f"\tRemoved {mod} from {destination_path} ✓", "RED")
+            except Exception as e:
+                print_color(f"Error removing {mod}: {e}", "RED")
+
+
 if __name__ == "__main__":
     mods = os.listdir(mods_path)
 
@@ -91,3 +106,6 @@ if __name__ == "__main__":
     for mod in mods:
         mod_path = os.path.join(mods_path, mod)
         copy_mod(mod, mod_path, destination_path)
+
+    # Clean up destination path
+    cleanup_destination(mods, destination_path)

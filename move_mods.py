@@ -4,22 +4,53 @@ import os
 import platform
 import shutil
 import git
-import subprocess
+from datetime import datetime, timezone, timedelta
 from utils import print_color, input_color
 
 current_directory = os.getcwd()
 mods_path = os.path.join(current_directory, "mods")
 
 
+def get_local_timestamp(timestamp):
+    """Receives a timestamp and returns EST timestamp"""
+    local_timezone = timezone(timedelta(hours=-5))
+    timestamp_utc = datetime.utcfromtimestamp(timestamp)
+    return timestamp_utc.replace(
+        tzinfo=timezone.utc).astimezone(local_timezone)
+
+
 def get_up_to_date():
-    """Run git fetch && git pull"""
+    """Run git checkout [branch] && git fetch && git pull"""
+    branch = "main"
+
+    # Define the repo
     repo = git.Repo('.')
-    repo.git.checkout('main')
     origin = repo.remotes.origin
     origin.fetch()
-    origin.pull()
-    hash = subprocess.run(["git rev-parse HEAD"], check=False)
-    print(hash)
+
+    # Fetch current commit & origin commit details
+    current_commit_hash = repo.head.commit.hexsha
+    current_commit_timestamp = repo.head.commit.committed_date
+    origin_commit_hash = repo.commit(branch).hexsha
+
+    # Compare current commit to origin commit
+    if current_commit_hash != origin_commit_hash:
+        # Show the user the current commit details
+        print_color(f"You're currently on: {current_commit_hash}", "YELLOW")
+        print_color(
+            f"This was committed on: {get_local_timestamp(current_commit_timestamp)}\n", "YELLOW")
+
+        # Checkout the branch
+        print_color("Updating to latest...\n", "YELLOW")
+        repo.git.checkout(branch)
+        origin.pull()
+
+        # Show the user the new current commit details
+        current_commit_hash = repo.head.commit.hexsha
+        current_commit_timestamp = repo.head.commit.committed_date
+        print_color(f"You're now on: {current_commit_hash}", "GREEN")
+        print_color(
+            f"This was committed on: {get_local_timestamp(current_commit_timestamp)}\n", "GREEN")
 
 
 def copy_mod(m, m_path, d_path):

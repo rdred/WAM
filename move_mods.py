@@ -3,8 +3,8 @@ import sys
 import os
 import platform
 import shutil
-import git
 from datetime import datetime, timezone, timedelta
+import git
 from utils import print_color, input_color
 
 current_directory = os.getcwd()

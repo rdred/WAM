@@ -26,13 +26,19 @@ def git_pull():
 
 def run_move_mods_script():
     """Move mods into correct folder"""
-    subprocess.run(['python', 'move_mods.py'])
+    subprocess.run(
+        ['python', 'move_mods.py "~\AppData\Roaming\.minecraft\mods" Y'], check=False)
+
+    # For debugging on mac...
+    # subprocess.run(
+    # ['python', 'move_mods.py ~/Library/Application Support/minecraft/mods Y'], check=False)
 
 
 def restart_server():
     """Restart the server"""
     # Replace this command with the actual command to restart your server
-    subprocess.run(['your_restart_command_here'])
+    print("I'd be restarting here!!")
+    # subprocess.run(['your_restart_command_here'])
 
 
 if __name__ == "__main__":
@@ -47,4 +53,5 @@ if __name__ == "__main__":
             run_move_mods_script()
             restart_server()
 
-        time.sleep(1_800)  # Sleep for 30 minutes
+        else:
+            time.sleep(1_800)  # Sleep for 30 minutes

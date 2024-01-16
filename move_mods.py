@@ -22,9 +22,18 @@ def copy_mod(m, m_path, d_path):
 def get_destination_path():
     """Determine the default destination path from OS or allow user to enter their own"""
     os_name = platform.system()
-    if os_name == "Darwin":
+
+    # If the user passed an arg, use that arg path
+    if len(sys.argv) > 1:
+        destination_path = os.path.expanduser(sys.argv[1])
+        return destination_path
+
+    # If the user is on a Mac, use this path
+    elif os_name == "Darwin":
         destination_path = os.path.expanduser(
             "~/Library/Application Support/minecraft/mods")
+
+    # If the user is on Windows, use this path
     else:
         destination_path = os.path.expanduser(
             "~\AppData\Roaming\.minecraft\mods")
@@ -79,11 +88,16 @@ if __name__ == "__main__":
 
     destination_path = get_destination_path()
 
-    # Prompt user to continue
-    print_color(
-        f"\n[WARNING]: This script will move the mods folder into {destination_path}", "YELLOW")
-    user_input = input_color(
-        "Press 'Y' to continue or any other key to abort: ", "YELLOW")
+    # If passed a Y arg, skip the user input check
+    if len(sys.argv) > 2 and sys.argv[2].upper() == 'Y':
+        user_input = "Y"
+
+    # Prompt the user to enter Y to confirm the changes
+    else:
+        print_color(
+            f"\n[WARNING]: This script will move the mods folder into {destination_path}", "YELLOW")
+        user_input = input_color(
+            "Press 'Y' to continue or any other key to abort: ", "YELLOW")
 
     # Exit the script if the user did not enter Y
     if user_input.upper() != 'Y':

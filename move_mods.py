@@ -83,7 +83,7 @@ def get_destination_path():
     # If the user is on Windows, use this path
     else:
         destination_path = os.path.expanduser(
-            "~\AppData\Roaming\.minecraft\mods")
+            "~/AppData/Roaming/.minecraft/mods")
 
     correct_path = False
     count = 0
@@ -105,7 +105,7 @@ def get_destination_path():
             return destination_path
         elif path_input == '1':
             destination_path = os.path.expanduser(
-                "~\Desktop\mcss_win-x86-64_v13.7.0\servers\WAM\mods")
+                "~/Desktop/mcss_win-x86-64_v13.7.0/servers/WAM/mods")
 
         # If path is incorrect, try again
         else:

@@ -97,12 +97,15 @@ def get_destination_path():
 
         # Prompt user to confirm if the current path is correct
         path_input = input_color(
-            "Press 'Y' if this is correct or enter the correct path: ", "YELLOW")
+            "Press 'Y' if this is correct or enter the correct path (Enter 1 for server path): ", "YELLOW")
 
         # If path is correct, return
         if path_input.upper() == 'Y':
             correct_path = True
             return destination_path
+        elif path_input == '1':
+            destination_path = os.path.expanduser(
+                "~\Desktop\mcss_win-x86-64_v13.7.0\servers\WAM\mods")
 
         # If path is incorrect, try again
         else:

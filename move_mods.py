@@ -1,4 +1,4 @@
-"""Move .jar files into the correct mod location."""
+"""Update from repo & move .jar files into the correct mod location."""
 import sys
 import os
 import platform

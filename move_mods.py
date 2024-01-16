@@ -3,10 +3,23 @@ import sys
 import os
 import platform
 import shutil
+import git
+import subprocess
 from utils import print_color, input_color
 
 current_directory = os.getcwd()
 mods_path = os.path.join(current_directory, "mods")
+
+
+def get_up_to_date():
+    """Run git fetch && git pull"""
+    repo = git.Repo('.')
+    repo.git.checkout('main')
+    origin = repo.remotes.origin
+    origin.fetch()
+    origin.pull()
+    hash = subprocess.run(["git rev-parse HEAD"], check=False)
+    print(hash)
 
 
 def copy_mod(m, m_path, d_path):
@@ -79,6 +92,7 @@ def cleanup_destination(mods_in_repo, destination_path):
 
 
 if __name__ == "__main__":
+    get_up_to_date()
     mods = os.listdir(mods_path)
 
     # List files in the mods folder

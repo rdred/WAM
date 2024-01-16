@@ -3,17 +3,10 @@ import sys
 import os
 import platform
 import shutil
-from colorama import Fore, Style
+from utils import print_color, input_color
 
 current_directory = os.getcwd()
 mods_path = os.path.join(current_directory, "mods")
-
-
-def print_color(string, color):
-    """Determine the Fore.color and print the string in that color."""
-    color_code = getattr(Fore, color, Fore.RESET)
-    reset_code = Style.RESET_ALL
-    print(color_code + string + reset_code)
 
 
 def copy_mod(m, m_path, d_path):
@@ -47,10 +40,8 @@ def get_destination_path():
             print_color(f"New mod location is {destination_path}", "YELLOW")
 
         # Prompt user to confirm if the current path is correct
-        path_input = input(
-            Fore.YELLOW +
-            "Press 'Y' if this is correct or enter the correct path: " +
-            Style.RESET_ALL)
+        path_input = input_color(
+            "Press 'Y' if this is correct or enter the correct path: ", "YELLOW")
 
         # If path is correct, return
         if path_input.upper() == 'Y':
@@ -91,10 +82,8 @@ if __name__ == "__main__":
     # Prompt user to continue
     print_color(
         f"\n[WARNING]: This script will move the mods folder into {destination_path}", "YELLOW")
-    user_input = input(
-        Fore.YELLOW +
-        "Press 'Y' to continue or any other key to abort: "
-        + Style.RESET_ALL)
+    user_input = input_color(
+        "Press 'Y' to continue or any other key to abort: ", "YELLOW")
 
     # Exit the script if the user did not enter Y
     if user_input.upper() != 'Y':
